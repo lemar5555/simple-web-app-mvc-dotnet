@@ -1,0 +1,46 @@
+name: CI/CD
+
+on: 
+   pull_request:
+   push: 
+    branches:
+      - master
+
+env:
+  ENV: Release
+  DOTNET: net7.0
+  OUT: /var/www/simple-web-app-mvc-dotnet
+  TARGET: linux-x64
+
+
+jobs:
+  build:
+    concurrency: 
+      cancel-in-progress: true
+      group: build-${{ github.sha }}
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: CD into workdir
+        run: cd SimpleWebAppMVC
+      - name: Dotnet clean
+        run: dotnet clean
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build -c ${{ env.ENV }} -r ${{ env.TARGET }} --no-self-contained
+      # - name: Test with dotnet
+        # run: dotnet test --logger trx --results-directory "TestResults-670.x"
+      - name: Publish
+        run: dotnet publish -c ${{ env.ENV }} -r ${{ env.TARGET }} --no-self-contained
+      # - name: Upload dotnet test results
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: dotnet-results-7.0.x
+      #     path: TestResults-7.0.x
+      #   # Use always() to always run this step to publish test results when there are test failures
+      #   if: ${{ always() }}
