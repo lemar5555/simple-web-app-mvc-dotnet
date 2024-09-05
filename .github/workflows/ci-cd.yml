@@ -32,11 +32,11 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build -c ${{ env.ENV }} -r ${{ env.TARGET }} --no-self-contained
+        run: dotnet build -c ${{ env.ENV }} ../SimpleWebAppMVC.sln
       # - name: Test with dotnet
         # run: dotnet test --logger trx --results-directory "TestResults-670.x"
-      - name: Publish
-        run: dotnet publish -c ${{ env.ENV }} -r ${{ env.TARGET }} --no-self-contained
+      # - name: Publish
+        # run: dotnet publish -c ${{ env.ENV }}  
       # - name: Upload dotnet test results
       #   uses: actions/upload-artifact@v4
       #   with:
