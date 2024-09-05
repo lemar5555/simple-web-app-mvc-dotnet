@@ -25,14 +25,12 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
-      - name: CD into workdir
-        run: cd SimpleWebAppMVC
       - name: Dotnet clean
         run: dotnet clean
       - name: Install dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build -c ${{ env.ENV }} ../SimpleWebAppMVC.sln
+        run: dotnet build -c ${{ env.ENV }} SimpleWebAppMVC.sln
       - name: Archive for release
         run: tar -xf build-${{ github.sha }}.tar -C SimpleWebAppMVC/bin/${{ env.ENV }}
       - name: Release
