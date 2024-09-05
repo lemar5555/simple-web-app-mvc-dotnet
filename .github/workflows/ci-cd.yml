@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: dotnet build -c ${{ env.ENV }} SimpleWebAppMVC.sln
       - name: Archive for release
-        run: tar -xf build-${{ github.sha }}.tar -C SimpleWebAppMVC/bin/${{ env.ENV }}
+        run: tar -czf build-${{ github.sha }}.tar -C SimpleWebAppMVC/bin/${{ env.ENV }}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
