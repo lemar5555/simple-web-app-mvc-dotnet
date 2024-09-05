@@ -33,6 +33,13 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build -c ${{ env.ENV }} ../SimpleWebAppMVC.sln
+      - name: Archive for release
+        run: tar -xf build-${{ github.sha }}.tar -C SimpleWebAppMVC/bin/${{ env.ENV }}
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build-${{ github.sha }}.tar
+
       # - name: Test with dotnet
         # run: dotnet test --logger trx --results-directory "TestResults-670.x"
       # - name: Publish
